@@ -1,4 +1,4 @@
-import{_ as u,r as o,o as g,c as p,a as r,w as l,b as w,d as h}from"./index-7816d15e.js";const m=`/* SPIDER -- a sample adventure game, by David Matuszek.
+import{_ as u,r as o,o as g,c as p,a as r,w as l,b as w,d as h}from"./index-0a13e5e7.js";const m=`/* SPIDER -- a sample adventure game, by David Matuszek.
 Consult this file and issue the command:   start.  */
 
 :- dynamic([at/2,i_am_at/1,alive/1]).
