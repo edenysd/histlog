@@ -1,5 +1,4 @@
 <script>
-import { reactive } from "vue";
 import game from "./game";
 
 export default {
@@ -166,7 +165,7 @@ export default {
 
 <template>
   <div>
-    <RouterLink class="close" to="/">X</RouterLink>
+    <RouterLink class="close" :to="{ name: 'home' }">X</RouterLink>
     <div
       class="container"
       :style="{

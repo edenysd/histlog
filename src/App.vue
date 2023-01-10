@@ -1,12 +1,10 @@
 <script>
-import { RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
 import HistoryLink from "./components/HistoryLink.vue";
 
 export default {
   name: "App",
   components: {
-    RouterView,
     HelloWorld,
     HistoryLink,
   },
@@ -26,7 +24,10 @@ export default {
 
 <template>
   <header>
-    <div class="wrapper">
+    <div
+      class="wrapper"
+      :class="$route.name != 'home' ? 'possible-needs-hide' : ''"
+    >
       <HelloWorld msg="Bienvenido a Histlog!" />
       <nav style="margin-bottom: 20px">
         <HistoryLink
@@ -107,7 +108,7 @@ nav a:first-of-type {
 }
 
 @media (max-width: 450px) {
-  .wrapper {
+  .possible-needs-hide {
     display: none;
   }
 }
