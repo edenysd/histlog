@@ -202,11 +202,11 @@
       return false;
     },
   };
-
+  printChat = null;
   // User output for browser
   tau_user_output = {
     put: function (text, _) {
-      console.log(text);
+      printChat(text);
       return true;
     },
     flush: function () {

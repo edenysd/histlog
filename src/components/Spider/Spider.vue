@@ -27,7 +27,9 @@ export default {
         {
           type: "text",
           author: `dungeon`,
-          data: { text: `Escribe \`start.\` para comenzar.` },
+          data: {
+            text: `Escribe el comando \n\`start.\` \npara comenzar tu aventura. No olvides de poner un punto al final de cada comando, sino invalidaré tu comando 😛.`,
+          },
         },
       ], // the list of the messages to show, can be paginated and adjusted dynamically
       newMessagesCount: 0,
@@ -62,18 +64,17 @@ export default {
     };
   },
   mounted() {
-    console.warn("Holis ");
     this.session = pl.create();
     this.session.consult(game, {
       success: function () {
         // Query;
       },
       error: function (err) {
-        console.log("Sintax Error", err);
+        printChat("Comando inválido 😛", err);
       },
     });
 
-    console.log = (text) => {
+    printChat = (text) => {
       this.pendingMessages.push(text);
     };
     this.intervalDungeonMessages = setInterval(() => {
@@ -106,11 +107,11 @@ export default {
               /* Answer */
             },
             error: function (err) {
-              console.log("Answer Error ", err);
+              printChat("Comando inválido 😛", err);
               /* Uncaught error */
             },
             fail: function (a) {
-              console.log("Answer Fail ", a);
+              printChat("Comando inválido 😛", a);
               /* Fail */
             },
             limit: function () {
@@ -119,7 +120,7 @@ export default {
           });
         },
         error: function (err) {
-          console.log("Query Error", err);
+          printChat("Comando inválido 😛", err);
         },
       });
     },
@@ -184,7 +185,7 @@ export default {
         :newMessagesCount="newMessagesCount"
         :isOpen="true"
         :close="closeChat"
-        :icons="icons"
+        :icons="{}"
         :open="openChat"
         :showEmoji="false"
         :showFile="false"

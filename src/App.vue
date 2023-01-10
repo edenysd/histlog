@@ -16,7 +16,7 @@ export default {
         {
           id: "spider",
           title: "Spider",
-          text: "¿Por qué el título está en inglés? Acaso es porque la historia es de otro mundo",
+          text: "¿Cómo una araña me va a enseñar Prolog? ¡Pues no tienes nada que perder!",
         },
       ],
     };
