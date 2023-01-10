@@ -14,7 +14,7 @@ export default {
         {
           id: "spider",
           title: "Spider",
-          text: "¿Cómo una araña me va a enseñar Prolog? ¡Pues no tienes nada que perder!",
+          text: "¿Cómo una araña te va a enseñar Prolog? ¡Pues no tienes nada que perder!",
         },
       ],
     };

@@ -97,6 +97,7 @@ nav a:first-of-type {
   }
 }
 .story-link {
+  background-color: rgba(227, 233, 238, 0.11);
   border: 1px solid hsla(0, 100%, 18%, 0.322) !important;
   border-radius: 5px;
   margin-bottom: 10px;
@@ -104,6 +105,7 @@ nav a:first-of-type {
   color: rgb(255, 255, 255) !important;
 }
 .story-link:hover {
+  background-color: rgba(227, 238, 228, 0.26);
   border: 1px solid hsla(100, 85%, 35%, 0.37) !important;
   transform: scale(1.02);
 }
