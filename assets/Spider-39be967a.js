@@ -1,4 +1,4 @@
-import{_ as g,r as i,o as p,c as m,a as r,w as c,b as h,d as l}from"./index-9c8f4b02.js";const _=`
+import{_ as g,r as i,o as p,c as m,a as r,w as c,b as h,d as l}from"./index-53485ee0.js";const _=`
 
 :- dynamic([at/2,estoy_en/1,vivo/1]).
 :- retractall(at(_, _)), retractall(estoy_en(_)), retractall(vivo(_)).
