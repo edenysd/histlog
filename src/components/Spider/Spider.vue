@@ -14,15 +14,15 @@ export default {
         {
           id: "me",
           name: "Me",
-          imageUrl: "/me.png",
+          imageUrl: `${import.meta.env.BASE_URL}/me.png`,
         },
         {
           id: "dungeon",
           name: "Dungeon Master",
-          imageUrl: "/dungeon_master.png",
+          imageUrl: `${import.meta.env.BASE_URL}/dungeon_master.png`,
         },
       ], // the list of all the participant of the conversation. `name` is the user name, `id` is used to establish the author of a message, `imageUrl` is supposed to be the user avatar.
-      titleImageUrl: "/spider.png",
+      titleImageUrl: `${import.meta.env.BASE_URL}/spider.png`,
       messageList: [
         {
           type: "text",
