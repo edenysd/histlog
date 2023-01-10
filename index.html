@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" href="/dungeon_master.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Histlog</title>
+    <script type="text/javascript" src="tau.js"></script>
+    <script src="/tree.js"></script>
+    <script src="/vanta-dots.js"></script>
+    <script type="module" crossorigin src="/assets/index-7816d15e.js"></script>
+    <link rel="stylesheet" href="/assets/index-977835b0.css">
+  </head>
+  <body>
+    <div id="canvas"></div>
+    <style>
+      #canvas{
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        top: 0px;
+        left: 0px;
+        z-index: -1;
+      }
+    </style>
+    </div>
+
+    </div>
+    <div id="app"></div>
+
+    <script>
+      VANTA.DOTS({
+        el: "#canvas",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.0,
+        minWidth: 200.0,
+        scale: 1.0,
+        scaleMobile: 1.0,
+        size: 4.4,
+        spacing: 57.0,
+      });
+    </script>
+    
+  </body>
+</html>
