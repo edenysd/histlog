@@ -28,7 +28,7 @@ export default {
           type: "text",
           author: `dungeon`,
           data: {
-            text: `Escribe el comando \n\`start.\` \npara comenzar tu aventura. No olvides de poner un punto al final de cada comando, sino invalidaré tu comando 😛.`,
+            text: `Escribe el comando \n\`iniciar.\` \npara comenzar tu aventura. No olvides de poner un punto al final de cada comando, sino invalidaré tu comando 😛.`,
           },
         },
       ], // the list of the messages to show, can be paginated and adjusted dynamically

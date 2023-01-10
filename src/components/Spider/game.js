@@ -1,90 +1,70 @@
-export default `/* SPIDER -- a sample adventure game, by David Matuszek.
-Consult this file and issue the command:   start.  */
+export default `
 
-:- dynamic([at/2,i_am_at/1,alive/1]).
-:- retractall(at(_, _)), retractall(i_am_at(_)), retractall(alive(_)).
+:- dynamic([at/2,estoy_en/1,vivo/1]).
+:- retractall(at(_, _)), retractall(estoy_en(_)), retractall(vivo(_)).
 
-/* This defines my current location. */
+estoy_en(prado).
 
-i_am_at(meadow).
+camino(arana, d, cueva).
+camino(cueva, u, arana).
+camino(cueva, w, entrada_de_la_cueva).
+camino(entrada_de_la_cueva, e, cueva).
+camino(entrada_de_la_cueva, s, prado).
 
-
-/* These facts describe how the rooms are connected. */
-
-path(spider, d, cave).
-
-path(cave, u, spider).
-path(cave, w, cave_entrance).
-
-path(cave_entrance, e, cave).
-path(cave_entrance, s, meadow).
-
-path(meadow, n, cave_entrance) :- at(flashlight, in_hand).
-path(meadow, n, cave_entrance) :-
-     write('Go into that dark cave without a light?  Are you crazy?'), 
+camino(prado, n, entrada_de_la_cueva) :- at(linterna, en_las_manos).
+camino(prado, n, entrada_de_la_cueva) :-
+     write('¿Entrando a la cueva oscura sin luz?'),
+     write('¿Estás bien de la cabeza?'), 
      !, fail.
-path(meadow, s, building).
 
-path(building, n, meadow).
-path(building, w, cage).
+camino(prado, s, edificio).
 
-path(cage, e, building).
+camino(edificio, n, prado).
+camino(edificio, w, jaula).
 
-path(closet, w, building).
+camino(jaula, e, edificio).
 
-path(building, e, closet) :- at(key, in_hand).
-path(building, e, closet) :-
-     write('The door appears to be locked.'),
+camino(bloqueado, w, edificio).
+
+camino(edificio, e, bloqueado) :- at(llave, en_las_manos).
+camino(edificio, e, bloqueado) :-
+     write('La puerta parece estar cerrada.'),
      fail.
 
+at(ruby, arana).
+at(llave, entrada_de_la_cueva).
+at(linterna, edificio).
+at(espada, bloqueado).
 
-/* These facts tell where the various objects in the game
-are located. */
+vivo(arana).
 
-at(ruby, spider).
-at(key, cave_entrance).
-at(flashlight, building).
-at(sword, closet).
-
-
-/* This fact specifies that the spider is alive. */
-
-alive(spider).
-
-
-/* These rules describe how to pick up an object. */
-
-take(X) :-
-     at(X, in_hand),
-     write('You''re already holding it!'),
-      !.
-
-take(X) :-
-     i_am_at(Place),
-     at(X, Place),
-     retract(at(X, Place)),
-     assertz(at(X, in_hand)),
-     write('OK.'),
+tomar(X) :-
+     at(X, en_las_manos),
+     write('!Ya lo tienes en tus manos¡'),
      !.
 
-take(_) :-
-     write('I don''t see it here.').
+tomar(X) :-
+     estoy_en(Place),
+     at(X, Place),
+     retract(at(X, Place)),
+     assertz(at(X, en_las_manos)),
+     write('De acuerdo.'),
+     !.
 
+tomar(_) :-
+     write('No lo veo aqui.').
 
-/* These rules describe how to put down an object. */
-
-drop(X) :-
-     at(X, in_hand),
-     i_am_at(Place),
-     retract(at(X, in_hand)),
+soltar(X) :-
+     at(X, en_las_manos),
+     estoy_en(Place),
+     retract(at(X, en_las_manos)),
      assertz(at(X, Place)),
-     write('OK.'),!.
+     write('De acuerdo.'),
+     !.
 
-drop(_) :-
+soltar(_) :-
      write('You aren''t holding it!').
 
-
-/* These rules define the six direction letters as calls to go/1. */
 
 n :- go(n).
 
@@ -98,161 +78,127 @@ u :- go(u).
 
 d :- go(d).
 
-
-/* This rule tells how to move in a given direction. */
-
-go(Direction) :-
-     i_am_at(Here),
-     path(Here, Direction, There),
-     retract(i_am_at(Here)),
-     assertz(i_am_at(There)),
-     look, !.
+go(Direccion) :-
+     estoy_en(Here),
+     camino(Here, Direccion, There),
+     retract(estoy_en(Here)),
+     assertz(estoy_en(There)),
+     observar,
+     !.
 
 go(_) :-
      write('You can''t go that way.').
 
-
-/* This rule tells how to look about you. */
-
-look :-
-     i_am_at(Place),
-     describe(Place),
+observar :-
+     estoy_en(Place),
+     describir(Place),
      notice_objects_at(Place).
-
-
-/* These rules set up a loop to mention all the objects
-in your vicinity. */
 
 notice_objects_at(Place) :-
      at(X, Place),
-     write('There is a '), write(X), write(' here.'),
+     write('Hay un(a) '), write(X), write(' aqui.'),
      fail.
 
 notice_objects_at(_).
 
+atacar :-
+     estoy_en(jaula),
+     write('¡Oh, que mal!  Has sido el alimento de un leon.'), 
+     !,
+     morir.
 
-/* These rules tell how to handle killing the lion and the spider. */
+atacar :-
+     estoy_en(cueva),
+     write('La pata de araña también es tan dura como un poste de teléfono.').
 
-kill :-
-     i_am_at(cage),
-     write('Oh, bad idea!  You have just been eaten by a lion.'), 
-     !, die.
-
-kill :-
-     i_am_at(cave),
-     write('This isn''t working.  The spider leg is about as tough'), 
-     write('as a telephone pole, too.').
-
-kill :-
-     i_am_at(spider),
-     at(sword, in_hand),
-     retract(alive(spider)),
-     write('You hack repeatedly at the spider''s back.  Slimy ichor'),
-     write('gushes out of the spider''s back, and gets all over you.'),
-     write('I think you have killed it, despite the continued twitching.'),
+atacar :-
+     estoy_en(arana),
+     at(espada, en_las_manos),
+     retract(vivo(arana)),
+     write('Cortas repetidamente la espalda de la araña. Un viscoso icor sale a borbotones del lomo de la araña y se apodera de ti.'),
+     write('Creo que lo has matado, a pesar de los continuos espasmos.'),
       !.
 
-kill :-
-     i_am_at(spider),
-     write('Beating on the spider''s back with your fists has no'), 
-     write('effect.  This is probably just as well.').
+atacar :-
+     estoy_en(arana),
+     write('Golpear la espalda de la araña con los puños no tiene efecto.').
 
-kill :-
-     write('I see nothing inimical here.').
+atacar :-
+     write('No veo nada hostil aquí.').
+
+morir :-
+     !, terminar.
+
+terminar :-
+     write('El juego ha terminado. Por favor, introduzca el comando "halt"'),
+     !.
+
+instrucciones :-
+     write('Ingrese comandos utilizando la sintaxis estándar de Prolog.'), 
+     write('Los comandos disponibles son:'), 
+     write('iniciar.                   -- para iniicar el juego.'), 
+     write('n.  s.  e.  w.  u.  d.   -- para ir en esa direccion.'), 
+     write('tomar(Object).            -- para tomar un objeto.'), 
+     write('soltar(Object).            -- para soltar un objeto.'), 
+     write('atacar.                    -- para atacar a un enemigo.'), 
+     write('observa.                    -- para observar tu alrededor.'), 
+     write('instrucciones.            -- para ver nuevamente este mensaje'), 
+     write('------').
+
+iniciar :-
+     instrucciones,
+     observar.
+
+describir(prado) :-
+     at(ruby, en_las_manos),
+     write('¡¡Felicidades!!'),
+     write('Has recuperado el rubí y has ganado la partida.'),  
+     terminar, !.
+
+describir(prado) :-
+     write('Estás en un prado.'),
+     write('Al norte está la oscura entrada de una cueva; al sur hay un pequeño edificio.'),
+     write('Tu tarea, si decides aceptarla, es recuperar el famoso rubí de Bar-Abzad y devolverlo a este prado.').
+
+describir(edificio) :-
+     write('Estás en un edificio pequeño.'),
+     write('La salida es hacia el norte.'),
+     write('Hay una puerta con barrotes al oeste, pero parece estar abierta. Hay una puerta más pequeña al este.').
+
+describir(jaula) :-
+     write('¡Estás en la guarida de un león! El león tiene un aspecto flaco y hambriento. ¡Será mejor que te vayas de aquí!').
 
 
-/* This rule tells how to die. */
+describir(bloqueado) :-
+     write('Esto no es más que un viejo armario de almacenamiento.').
 
-die :-
-     !, finish.
+describir(entrada_de_la_cueva) :-
+     write('Estás en la entrada de una cueva húmeda.'),
+     write('La salida es al sur; hay un pasaje grande, oscuro y redondo hacia el este.').
 
+describir(cueva) :-
+     vivo(arana),
+     at(ruby, en_las_manos),
+     write('¡¡¡La araña te ve con el rubí y ataca!!!'), 
+     write('  ...se acaba en segundos....  '),
+     morir.
 
-/* Under UNIX, the   halt.  command quits Prolog but does not
-remove the output window. On a PC, however, the window
-disappears before the final output can be seen. Hence this
-routine requests the user to perform the final  halt.  */
+describir(cueva) :-
+     vivo(arana),
+     write('¡Aquí hay una araña gigante!'),
+     write('¡Una pierna peluda, del tamaño de un poste de teléfono, está directamente frente a ti!'),
+     write('Te aconsejo que te vayas pronto y en silencio....'),
+     !.
 
-finish :-
-     
-     write('The game is over. Please enter the   halt.   command.'),
-      !.
-
-
-/* This rule just writes out game instructions. */
-
-instructions :-
-     
-     write('Enter commands using standard Prolog syntax.'),
-     write('Available commands are:'), 
-     write('start.                   -- to start the game.'), 
-     write('n.  s.  e.  w.  u.  d.   -- to go in that direction.'), 
-     write('take(Object).            -- to pick up an object.'), 
-     write('drop(Object).            -- to put down an object.'), 
-     write('kill.                    -- to attack an enemy.'), 
-     write('look.                    -- to look around you again.'),
-     write('instructions.            -- to see this message again.').
+describir(cueva) :-
+     write('¡Diablos! Hay una araña gigante aquí, retorciéndose.').
 
 
-/* This rule prints out instructions and tells where you are. */
-
-start :-
-     instructions,
-     look.
+describir(arana) :-
+     vivo(arana),
+     write('Estás encima de una araña gigante, de pie sobre una alfombra áspera de pelo áspero. El olor es horrible.').
 
 
-/* These rules describe the various rooms.  Depending on
-circumstances, a room may have more than one description. */
-
-describe(meadow) :-
-     at(ruby, in_hand),
-     write('Congratulations!!  You have recovered the ruby'),
-     write('and won the game.'), 
-     finish, !.
-
-describe(meadow) :-
-     write('You are in a meadow.  To the north is the dark mouth'), 
-     write('of a cave; to the south is a small building.  Your'), 
-     write('assignment, should you decide to accept it, is to'), 
-     write('recover the famed Bar-Abzad ruby and return it to'), 
-     write('this meadow.').
-
-describe(building) :-
-     write('You are in a small building.  The exit is to the north.'), 
-     write('There is a barred door to the west, but it seems to be'), 
-     write('unlocked.  There is a smaller door to the east.').
-
-describe(cage) :-
-     write('You are in a lion''s den!  The lion has a lean and'),
-     write('hungry look.  You better get out of here!').
-
-describe(closet) :-
-     write('This is nothing but an old storage closet.').
-
-describe(cave_entrance) :-
-     write('You are in the mouth of a dark cave.  The exit is to'), 
-     write('the south; there is a large, dark, round passage to'), 
-     write('the east.').
-
-describe(cave) :-
-     alive(spider),
-     at(ruby, in_hand),
-     write('The spider sees you with the ruby and attacks!!!'), 
-     write('    ...it is over in seconds....'),
-     die.
-
-describe(cave) :-
-     alive(spider),
-     write('There is a giant spider here!  One hairy leg, about the'), 
-     write('size of a telephone pole, is directly in front of you!'), 
-     write('I would advise you to leave promptly and quietly....'), !.
-describe(cave) :-
-     write('Yecch!  There is a giant spider here, twitching.').
-
-describe(spider) :-
-     alive(spider),
-     write('You are on top of a giant spider, standing in a rough'),
-     write('mat of coarse hair.  The smell is awful.').
-
-describe(spider) :-
-     write('Oh, gross!  You''re on top of a giant dead spider!').
+describir(arana) :-
+     write('¡Que, asqueroso! ¡Estás encima del cadaver de una araña gigante!').
 `;
