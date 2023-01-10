@@ -130,7 +130,7 @@ morir :-
      !, terminar.
 
 terminar :-
-     write('El juego ha terminado. Por favor, introduzca el comando "halt"'),
+     write('El juego ha terminado. No hay vuelta atras. Jajaja'),
      !.
 
 instrucciones :-
@@ -141,7 +141,7 @@ instrucciones :-
      write('tomar(Object).            -- para tomar un objeto.'), 
      write('soltar(Object).            -- para soltar un objeto.'), 
      write('atacar.                    -- para atacar a un enemigo.'), 
-     write('observa.                    -- para observar tu alrededor.'), 
+     write('observar.                    -- para observar tu alrededor.'), 
      write('instrucciones.            -- para ver nuevamente este mensaje'), 
      write('------').
 
