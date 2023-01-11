@@ -1,4 +1,4 @@
-import{_ as g,r as i,o as p,c as m,a as r,w as c,b as h,d as l}from"./index-53485ee0.js";const _=`
+import{_ as g,r as i,o as p,c as m,a as r,w as c,b as h,d as l}from"./index-a48a545e.js";const _=`
 
 :- dynamic([at/2,estoy_en/1,vivo/1]).
 :- retractall(at(_, _)), retractall(estoy_en(_)), retractall(vivo(_)).
@@ -31,7 +31,7 @@ camino(edificio, e, bloqueado) :-
      write('La puerta parece estar cerrada.'),
      fail.
 
-at(ruby, arana).
+at(rubi, arana).
 at(llave, entrada_de_la_cueva).
 at(linterna, edificio).
 at(espada, bloqueado).
@@ -130,7 +130,7 @@ morir :-
      !, terminar.
 
 terminar :-
-     write('El juego ha terminado. Por favor, introduzca el comando "halt"'),
+     write('El juego ha terminado. No hay vuelta atras. Jajaja'),
      !.
 
 instrucciones :-
@@ -141,7 +141,7 @@ instrucciones :-
      write('tomar(Object).            -- para tomar un objeto.'), 
      write('soltar(Object).            -- para soltar un objeto.'), 
      write('atacar.                    -- para atacar a un enemigo.'), 
-     write('observa.                    -- para observar tu alrededor.'), 
+     write('observar.                    -- para observar tu alrededor.'), 
      write('instrucciones.            -- para ver nuevamente este mensaje'), 
      write('------').
 
@@ -150,7 +150,7 @@ iniciar :-
      observar.
 
 describir(prado) :-
-     at(ruby, en_las_manos),
+     at(rubi, en_las_manos),
      write('¡¡Felicidades!!'),
      write('Has recuperado el rubí y has ganado la partida.'),  
      terminar, !.
@@ -178,7 +178,7 @@ describir(entrada_de_la_cueva) :-
 
 describir(cueva) :-
      vivo(arana),
-     at(ruby, en_las_manos),
+     at(rubi, en_las_manos),
      write('¡¡¡La araña te ve con el rubí y ataca!!!'), 
      write('  ...se acaba en segundos....  '),
      morir.
